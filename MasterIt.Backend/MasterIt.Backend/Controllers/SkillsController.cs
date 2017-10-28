@@ -36,41 +36,6 @@ namespace MasterIt.Backend.Controllers
             return Ok(skill);
         }
 
-        // PUT: api/Skills/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutSkill(int id, Skill skill)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != skill.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(skill).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SkillExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
         // POST: api/Skills
         [ResponseType(typeof(Skill))]
         public IHttpActionResult PostSkill(Skill skill)

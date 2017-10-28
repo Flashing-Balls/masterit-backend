@@ -21,7 +21,7 @@ namespace MasterIt.Backend.Controllers
         [HttpGet]
         public IQueryable<Post> GetPosts(int userId)
         {
-            var user = db.Users.Include(u => u.Sports).SingleOrDefault(u => u.Id == userId);
+            var user = db.Users.Find(userId);
 
             if (user == null)
             {

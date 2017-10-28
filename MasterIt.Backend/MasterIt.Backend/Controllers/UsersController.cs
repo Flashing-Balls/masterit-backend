@@ -23,7 +23,9 @@ namespace MasterIt.Backend.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(int id)
         {
-            User user = db.Users.Find(id);
+            User user = db.Users
+                .Include(u => u.Rank)
+                .SingleOrDefault(u => u.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -38,7 +40,6 @@ namespace MasterIt.Backend.Controllers
             {
                 db.Dispose();
             }
-
             base.Dispose(disposing);
         }
     }

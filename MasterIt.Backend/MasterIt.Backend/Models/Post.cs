@@ -9,7 +9,7 @@ namespace MasterIt.Backend.Models
         [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public int VideoUrl { get; set; }
+        public string VideoUrl { get; set; }
         public bool IsRatable { get; set; }
         public bool IsApproved { get; set; }
         public User User { get; set; }

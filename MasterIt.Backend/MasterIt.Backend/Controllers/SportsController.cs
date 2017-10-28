@@ -17,12 +17,6 @@ namespace MasterIt.Backend.Controllers
     {
         private DatabaseContext db = new DatabaseContext();
 
-        // GET: api/Sports
-        public IQueryable<Sport> GetSports()
-        {
-            return db.Sports;
-        }
-
         // GET: api/Sports/5
         [ResponseType(typeof(Sport))]
         public IHttpActionResult GetSport(int id)
