@@ -1,0 +1,14 @@
+# General rules
+**/*.suo
+**/*.user
+
+**/bin
+**/obj
+
+# Azure specific
+**/csx
+**/rcf
+
+#.VS folder
+.vs
+packages
