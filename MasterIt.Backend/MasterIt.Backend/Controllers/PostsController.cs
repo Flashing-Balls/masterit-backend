@@ -21,7 +21,7 @@ namespace MasterIt.Backend.Controllers
         [HttpGet]
         public IQueryable<Post> GetPosts(int userId)
         {
-            var user = db.Users.Find(userId);
+            var user = db.Users.Include(u => u.Sports).SingleOrDefault(u => u.Id == userId);
 
             if (user == null)
             {
@@ -42,11 +42,6 @@ namespace MasterIt.Backend.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool PostExists(int id)
-        {
-            return db.Posts.Any(e => e.Id == id);
         }
     }
 }
