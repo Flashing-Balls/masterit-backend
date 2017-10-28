@@ -21,8 +21,7 @@ namespace MasterIt.Backend.Controllers
         [HttpGet]
         public IQueryable<Comment> GetComments(int postId)
         {
-            // where PostId == postId
-            return db.Comments;
+            return db.Comments.Where(c => c.Post.Id == postId);
         }
 
         protected override void Dispose(bool disposing)

@@ -21,7 +21,7 @@ namespace MasterIt.Backend.Controllers
         [HttpGet]
         public IQueryable<Post> GetPosts(int userId)
         {
-            return db.Posts;
+            return db.Posts.Where(p => p.User.Id == userId);
         }
 
         protected override void Dispose(bool disposing)
@@ -35,7 +35,7 @@ namespace MasterIt.Backend.Controllers
 
         private bool PostExists(int id)
         {
-            return db.Posts.Count(e => e.Id == id) > 0;
+            return db.Posts.Any(e => e.Id == id);
         }
     }
 }
