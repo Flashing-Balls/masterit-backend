@@ -2,12 +2,12 @@
 
 namespace MasterIt.Backend.Models
 {
-    public class Skill
+    public class Interest
     {
         [Key]
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public User User { get; set; }
         public Sport Sport { get; set; }
     }
 }
