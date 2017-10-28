@@ -21,7 +21,18 @@ namespace MasterIt.Backend.Controllers
         [HttpGet]
         public IQueryable<Post> GetPosts(int userId)
         {
-            return db.Posts.Where(p => p.User.Id == userId);
+            var user = db.Users.Find(userId);
+
+            if (user == null)
+            {
+                return new Post[0].AsQueryable();
+            }
+
+            var interests = user.Sports.Select(s => s.Id).ToArray();
+
+            var r = new Random();
+
+            return db.Posts.Where(x => x.User.Id != userId && interests.Contains(x.Skill.Sport.Id)).OrderBy(x => r.Next());
         }
 
         protected override void Dispose(bool disposing)
