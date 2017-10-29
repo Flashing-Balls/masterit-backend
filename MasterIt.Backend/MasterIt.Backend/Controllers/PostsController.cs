@@ -26,6 +26,13 @@ namespace MasterIt.Backend.Controllers
                 .Where(x => x.UserId != userId && interests.Contains(x.Skill.SportId));
         }
 
+        public IQueryable<Post> GetPostsBySkill(int userId, int skillId)
+        {
+            return db.Posts.Include(p => p.Comments)
+                .Include(p => p.Skill)
+                .Include(d => d.User).Where(x => x.UserId == userId && x.SkillId == skillId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
