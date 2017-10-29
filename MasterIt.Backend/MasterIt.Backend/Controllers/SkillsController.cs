@@ -23,50 +23,6 @@ namespace MasterIt.Backend.Controllers
             return db.SKills;
         }
 
-        // GET: api/Skills/5
-        [ResponseType(typeof(Skill))]
-        public IHttpActionResult GetSkill(int id)
-        {
-            Skill skill = db.SKills.Find(id);
-            if (skill == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(skill);
-        }
-
-        // POST: api/Skills
-        [ResponseType(typeof(Skill))]
-        public IHttpActionResult PostSkill(Skill skill)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.SKills.Add(skill);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = skill.Id }, skill);
-        }
-
-        // DELETE: api/Skills/5
-        [ResponseType(typeof(Skill))]
-        public IHttpActionResult DeleteSkill(int id)
-        {
-            Skill skill = db.SKills.Find(id);
-            if (skill == null)
-            {
-                return NotFound();
-            }
-
-            db.SKills.Remove(skill);
-            db.SaveChanges();
-
-            return Ok(skill);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -74,11 +30,6 @@ namespace MasterIt.Backend.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool SkillExists(int id)
-        {
-            return db.SKills.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -15,6 +15,6 @@ namespace MasterIt.Backend.Models
         public bool IsApproved { get; set; }
         public User User { get; set; }
         public Skill Skill { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public IList<Comment> Comments { get; set; }
     }
 }

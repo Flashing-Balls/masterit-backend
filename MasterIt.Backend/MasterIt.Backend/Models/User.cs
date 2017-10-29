@@ -13,7 +13,7 @@ namespace MasterIt.Backend.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Rank Rank { get; set; }
-        public IEnumerable<Sport> Sports { get; set; }
-        public IEnumerable<Skill> Skills { get; set; }
+        public IList<Sport> Sports { get; set; }
+        public IList<Skill> Skills { get; set; }
     }
 }

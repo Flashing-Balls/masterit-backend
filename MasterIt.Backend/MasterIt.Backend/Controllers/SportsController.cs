@@ -21,7 +21,9 @@ namespace MasterIt.Backend.Controllers
         [ResponseType(typeof(Sport))]
         public IHttpActionResult GetSport(int id)
         {
-            Sport sport = db.Sports.Find(id);
+            Sport sport = db.Sports
+                .Include(s => s.Skills)
+                .SingleOrDefault(s => s.Id == id);
             if (sport == null)
             {
                 return NotFound();
@@ -29,73 +31,6 @@ namespace MasterIt.Backend.Controllers
 
             return Ok(sport);
         }
-
-        // PUT: api/Sports/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutSport(int id, Sport sport)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != sport.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(sport).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SportExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Sports
-        [ResponseType(typeof(Sport))]
-        public IHttpActionResult PostSport(Sport sport)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Sports.Add(sport);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = sport.Id }, sport);
-        }
-
-        // DELETE: api/Sports/5
-        [ResponseType(typeof(Sport))]
-        public IHttpActionResult DeleteSport(int id)
-        {
-            Sport sport = db.Sports.Find(id);
-            if (sport == null)
-            {
-                return NotFound();
-            }
-
-            db.Sports.Remove(sport);
-            db.SaveChanges();
-
-            return Ok(sport);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

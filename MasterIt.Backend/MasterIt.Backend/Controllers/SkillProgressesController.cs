@@ -86,22 +86,6 @@ namespace MasterIt.Backend.Controllers
             return CreatedAtRoute("DefaultApi", new { id = skillProgress.Id }, skillProgress);
         }
 
-        // DELETE: api/SkillProgresses/5
-        [ResponseType(typeof(SkillProgress))]
-        public IHttpActionResult DeleteSkillProgress(int id)
-        {
-            SkillProgress skillProgress = db.SkillProgresses.Find(id);
-            if (skillProgress == null)
-            {
-                return NotFound();
-            }
-
-            db.SkillProgresses.Remove(skillProgress);
-            db.SaveChanges();
-
-            return Ok(skillProgress);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -100,8 +100,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\InterestsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
-    <Compile Include="Controllers\PotatoesController.cs" />
-    <Compile Include="Controllers\RanksController.cs" />
     <Compile Include="Controllers\SkillProgressesController.cs" />
     <Compile Include="Controllers\SkillsController.cs" />
     <Compile Include="Controllers\SportsController.cs" />

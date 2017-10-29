@@ -10,6 +10,6 @@ namespace MasterIt.Backend.Models
 
         public string Name { get; set; }
 
-        public IEnumerable<Skill> Skills { get; set; }
+        public IList<Skill> Skills { get; set; }
     }
 }

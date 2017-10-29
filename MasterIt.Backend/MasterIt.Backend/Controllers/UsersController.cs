@@ -25,6 +25,7 @@ namespace MasterIt.Backend.Controllers
         {
             User user = db.Users
                 .Include(u => u.Rank)
+                .Include(u => u.Skills)
                 .SingleOrDefault(u => u.Id == id);
             if (user == null)
             {
