@@ -17,75 +17,39 @@ namespace MasterIt.Backend.Controllers
     {
         private DatabaseContext db = new DatabaseContext();
 
-        // GET: api/SkillProgresses
-        public IQueryable<SkillProgress> GetSkillProgresses()
+        // GET: api/SkillProgresses?userId
+        public IQueryable<SkillProgress> GetSkillProgresses(int userId)
         {
-            return db.SkillProgresses;
-        }
-
-        // GET: api/SkillProgresses/5
-        [ResponseType(typeof(SkillProgress))]
-        public IHttpActionResult GetSkillProgress(int id)
-        {
-            SkillProgress skillProgress = db.SkillProgresses.Find(id);
-            if (skillProgress == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(skillProgress);
+            return db.SkillProgresses.Where(p => p.User.Id == userId);
         }
 
         // PUT: api/SkillProgresses/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutSkillProgress(int id, SkillProgress skillProgress)
+        public IHttpActionResult PutSkillProgress(int userId, int skillId, int progress)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var skillProgress = db.SkillProgresses.SingleOrDefault(p => p.User.Id == userId && p.Skill.Id == skillId);
 
-            if (id != skillProgress.Id)
+            if (skillProgress == null)
             {
-                return BadRequest();
-            }
-
-            db.Entry(skillProgress).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SkillProgressExists(id))
+                skillProgress = new SkillProgress
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    SkillId = skillId,
+                    UserId = userId,
+                    CompletedOn = DateTime.Now,
+                    Progress = progress
+                };
+                db.Entry(skillProgress).State = EntityState.Added;
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/SkillProgresses
-        [ResponseType(typeof(SkillProgress))]
-        public IHttpActionResult PostSkillProgress(SkillProgress skillProgress)
-        {
-            if (!ModelState.IsValid)
+            else
             {
-                return BadRequest(ModelState);
+                skillProgress.Progress = progress;
+                db.Entry(skillProgress).State = EntityState.Modified;
             }
 
-            db.SkillProgresses.Add(skillProgress);
             db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = skillProgress.Id }, skillProgress);
+            return Ok();
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -93,11 +57,6 @@ namespace MasterIt.Backend.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool SkillProgressExists(int id)
-        {
-            return db.SkillProgresses.Count(e => e.Id == id) > 0;
         }
     }
 }
