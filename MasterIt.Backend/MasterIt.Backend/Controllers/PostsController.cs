@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using MasterIt.Backend.Models;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MasterIt.Backend.Controllers
 {
@@ -34,7 +39,7 @@ namespace MasterIt.Backend.Controllers
 
                 if (post.IsApproved && !post.IsRatable)
                 {
-                    p.AddRange(allPosts.FindAll(t => t.UserId == post.UserId && post.SkillId == t.SkillId));
+                    p.AddRange(allPosts.FindAll(t => t.UserId == post.UserId && post.SkillId == t.SkillId && post.Id != t.Id));
                 }
 
                 return p;
@@ -48,20 +53,35 @@ namespace MasterIt.Backend.Controllers
                 .Include(d => d.User).Where(x => x.UserId == userId && x.SkillId == skillId);
         }
 
+        /*
         [HttpPost]
-        public IHttpActionResult PostData(Post post)
+        public IHttpActionResult PostData()
         {
-            if (post.User == null || post.Comments == null || post.Date == default(DateTime) ||
-                string.IsNullOrEmpty(post.VideoUrl) || post.Skill == null)
+            var post = new Post();
+
+            using (var reader = new StreamReader(HttpContext.Current.Request.InputStream))
             {
-                return BadRequest();
+                var content = reader.ReadToEnd();
+
+                Trace.WriteLine(content);
+
+                try
+                {
+                    var json = JObject.Parse(content);
+
+                    //json...
+                }
+                catch
+                {
+                    return BadRequest();
+                }
             }
 
             db.Posts.Add(post);
             db.SaveChanges();
 
             return Ok();
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {
