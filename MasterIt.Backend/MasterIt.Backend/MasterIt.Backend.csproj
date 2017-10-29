@@ -166,6 +166,7 @@
     <Compile Include="Models\SkillProgress.cs" />
     <Compile Include="Models\Rank.cs" />
     <Compile Include="Models\Skill.cs" />
+    <Compile Include="Models\SkillProgressTimeline.cs" />
     <Compile Include="Models\Sport.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Post.cs" />

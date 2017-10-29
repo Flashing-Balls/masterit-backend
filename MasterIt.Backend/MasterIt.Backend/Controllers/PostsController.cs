@@ -12,11 +12,16 @@ namespace MasterIt.Backend.Controllers
 
         // GET: api/Posts/userId
         [HttpGet]
+        [Route("api/Posts/{userId}")]
         public IQueryable<Post> GetPosts(int userId)
         {
-            var interests = db.Interests.Where(i => i.UserId == userId).Select(i => i.Id);
+            var interests = db.Interests.Where(i => i.UserId == userId).Select(i => i.SportId);
 
-            return db.Posts.Include(p => p.Comments).Include(p => p.Skill).Include(d => d.User).Where(x => x.User.Id != userId && interests.Contains(x.Skill.SportId));
+            return db.Posts
+                .Include(p => p.Comments)
+                .Include(p => p.Skill)
+                .Include(d => d.User)
+                .Where(x => x.UserId != userId && interests.Contains(x.Skill.SportId));
         }
 
         protected override void Dispose(bool disposing)

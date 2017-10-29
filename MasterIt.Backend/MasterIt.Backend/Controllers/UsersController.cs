@@ -12,20 +12,30 @@ namespace MasterIt.Backend.Controllers
     {
         private DatabaseContext db = new DatabaseContext();
 
-        // GET: api/Users/5
         [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
+        [Route("api/Users/{username}")]
+        public IHttpActionResult GetUser(string username)
         {
             User user = db.Users
                 .Include(u => u.Rank)
                 .Include(u => u.Skills)
-                .SingleOrDefault(u => u.Id == id);
+                .SingleOrDefault(u => u.Username == username);
             if (user == null)
             {
                 return NotFound();
             }
 
             return Ok(user);
+        }
+
+        [HttpGet]
+        [Route("api/Users/{userId}/posts")]
+        public IQueryable<Post> GetUserPosts(int userId)
+        {
+            return db.Posts
+                .Include(p => p.Skill)
+                .Include(p => p.User)
+                .Where(p => p.User.Id == userId);
         }
 
         protected override void Dispose(bool disposing)

@@ -1,5 +1,6 @@
 ﻿using MasterIt.Backend.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -12,10 +13,31 @@ namespace MasterIt.Backend.Controllers
     {
         private DatabaseContext db = new DatabaseContext();
 
-        // GET: api/SkillProgresses?userId
-        public IQueryable<SkillProgress> GetSkillProgresses(int userId)
+        // GET: api/SkillProgresses/userId
+        [HttpGet]
+        [Route("api/SkillProgresses/{userId}")]
+        public IQueryable<SkillProgressTimeline> GetSkillProgresses(int userId)
         {
-            return db.SkillProgresses.Where(p => p.User.Id == userId);
+            var skills = db.SkillProgresses
+                .Where(p => p.User.Id == userId)
+                .Select(p => new SkillProgressTimeline
+                {
+                    Id = p.Id,
+                    CompletedOn = p.CompletedOn,
+                    Progress = p.Progress,
+                    SkillId = p.SkillId,
+                    Skill = p.Skill,
+                    UserId = p.UserId,
+                    User = p.User
+                });
+
+            // screw performance
+            foreach (var skill in skills)
+            {
+                skill.Posts = db.Posts.Where(p => p.User.Id == userId && p.Skill.Id == skill.Id).ToList();
+            }
+
+            return skills;
         }
 
         // PUT: api/SkillProgresses/5
