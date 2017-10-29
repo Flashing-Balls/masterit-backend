@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MasterIt.Backend.Models;
 using System.Data;
 using System.Data.Entity;
@@ -45,6 +46,21 @@ namespace MasterIt.Backend.Controllers
             return db.Posts.Include(p => p.Comments)
                 .Include(p => p.Skill)
                 .Include(d => d.User).Where(x => x.UserId == userId && x.SkillId == skillId);
+        }
+
+        [HttpPost]
+        public IHttpActionResult PostData(Post post)
+        {
+            if (post.User == null || post.Comments == null || post.Date == default(DateTime) ||
+                string.IsNullOrEmpty(post.VideoUrl) || post.Skill == null)
+            {
+                return BadRequest();
+            }
+
+            db.Posts.Add(post);
+            db.SaveChanges();
+
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
