@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MasterIt.Backend.Models;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Description;
-using MasterIt.Backend;
-using MasterIt.Backend.Models;
 
 namespace MasterIt.Backend.Controllers
 {
