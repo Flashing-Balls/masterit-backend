@@ -2,10 +2,12 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 
 namespace MasterIt.Backend.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SportsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();

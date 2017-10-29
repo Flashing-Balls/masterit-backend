@@ -1,9 +1,11 @@
 ﻿using MasterIt.Backend.Models;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace MasterIt.Backend.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SkillsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();

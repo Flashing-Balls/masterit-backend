@@ -3,9 +3,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace MasterIt.Backend.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PostsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();
