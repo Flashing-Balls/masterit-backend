@@ -1,4 +1,5 @@
-﻿using MasterIt.Backend.Models;
+﻿using System.Collections.Generic;
+using MasterIt.Backend.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace MasterIt.Backend.Controllers
         // GET: api/Posts/userId
         [HttpGet]
         [Route("api/Posts/{userId}")]
-        public IQueryable<IQueryable<Post>> GetPosts(int userId)
+        public IQueryable<IList<Post>> GetPosts(int userId)
         {
             var interests = db.Interests.Where(i => i.UserId == userId).Select(i => i.SportId);
 
@@ -25,20 +26,20 @@ namespace MasterIt.Backend.Controllers
                 .Include(d => d.User)
                 .Where(x => x.UserId != userId && interests.Contains(x.Skill.SportId)).AsEnumerable().Select(GetPostCollection).AsQueryable();
 
-            IQueryable<Post> GetPostCollection(Post post)
+            IList<Post> GetPostCollection(Post post)
             {
                 var p = new[] {post};
 
                 if (!post.IsApproved || post.IsRatable)
                 {
-                    return p.AsQueryable();
+                    return p;
                 }
 
                 var posts = db.Posts.Include(t => t.Comments)
                     .Include(t => t.Skill)
                     .Include(d => d.User).Where(t => t.UserId == post.UserId && post.SkillId == t.SkillId);
 
-                return p.Concat(posts).AsQueryable();
+                return p.Concat(posts).ToArray();
             }
         }
 
