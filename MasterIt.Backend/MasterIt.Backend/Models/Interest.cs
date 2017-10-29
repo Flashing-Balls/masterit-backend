@@ -6,8 +6,7 @@ namespace MasterIt.Backend.Models
     {
         [Key]
         public int Id { get; set; }
-
-        public User User { get; set; }
-        public Sport Sport { get; set; }
+        public int UserId { get; set; }
+        public int SportId { get; set; }
     }
 }
