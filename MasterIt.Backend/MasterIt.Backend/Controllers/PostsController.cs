@@ -18,28 +18,25 @@ namespace MasterIt.Backend.Controllers
         [Route("api/Posts/{userId}")]
         public IQueryable<IList<Post>> GetPosts(int userId)
         {
-            var interests = db.Interests.Where(i => i.UserId == userId).Select(i => i.SportId);
+            var interests = db.Interests.Where(i => i.UserId == userId).Select(i => i.SportId).ToList();
 
-            return db.Posts
+            var allPosts = db.Posts
                 .Include(p => p.Comments)
                 .Include(p => p.Skill)
-                .Include(d => d.User)
-                .Where(x => x.UserId != userId && interests.Contains(x.Skill.SportId)).AsEnumerable().Select(GetPostCollection).AsQueryable();
+                .Include(d => d.User).ToList();
+
+            return allPosts.Where(x => x.UserId != userId && interests.Contains(x.Skill.SportId)).Select(GetPostCollection).AsQueryable();
 
             IList<Post> GetPostCollection(Post post)
             {
-                var p = new[] {post};
+                var p = new List<Post> { post };
 
-                if (!post.IsApproved || post.IsRatable)
+                if (post.IsApproved && !post.IsRatable)
                 {
-                    return p;
+                    p.AddRange(allPosts.FindAll(t => t.UserId == post.UserId && post.SkillId == t.SkillId));
                 }
 
-                var posts = db.Posts.Include(t => t.Comments)
-                    .Include(t => t.Skill)
-                    .Include(d => d.User).Where(t => t.UserId == post.UserId && post.SkillId == t.SkillId);
-
-                return p.Concat(posts).ToArray();
+                return p;
             }
         }
 
